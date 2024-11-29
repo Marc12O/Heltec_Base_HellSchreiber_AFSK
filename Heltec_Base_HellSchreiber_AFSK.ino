@@ -22,7 +22,7 @@ HellClient hell(&audio);
 
 void setup() {
   heltec_setup();
-  
+
   both.print("SX12xx Init ... ");
   int state = radio.beginFSK(FREQUENCY);  // 869.525
   if (state == RADIOLIB_ERR_NONE) {
@@ -51,22 +51,25 @@ void setup() {
   both.printf("Vbat: %.2fV (%d%%)\n", vbat, heltec_battery_percent(vbat));
 }
 
-int tijd =0;
+int tijd = 0;
 
 void loop() {
   heltec_loop();
-  
-  both.println("Sending Hell data ... ");
+
+  both.println("Sending Hell AFSK data ... ");
 
   int i, len;
-  
+
   char hellstring[] = "PA9MG TEST A QUICK BROWN FOX JUMPS OVER THE LAZY DOG K";
 
   len = strlen(hellstring);
-  for (i=0;i<len;i++)
+  for (i = 0; i < len; i++) {
     hell.write(hellstring[i]);
-
-  both.println("HellSchreiber done!");
+    heltec_led(50);
+    delay(50);
+    heltec_led(0);
+  }
+  both.println("HellSchreiber AFSK done!");
 
   tijd = tijd + 60000;
   both.print("Seconds pause: ");
